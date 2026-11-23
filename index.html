@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Flashcard Body Parts — Bahasa Inggris Kelas 3 SD</title>
+<meta name="description" content="Flashcard interaktif bertema Parts of the Body untuk kelas 3 SD. Balik kartu untuk melihat nama bagian tubuh dalam bahasa Inggris, tandai yang sudah hafal, lalu ulangi yang belum.">
+<meta name="theme-color" content="#f6f1e7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231f9d6f'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='34' font-weight='700' fill='%23fffdf8' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main id="app">
+
+  <!-- ============ SETUP ============ -->
+  <section class="screen setup-screen is-active" id="screen-setup">
+    <div class="setup-inner">
+      <header class="hero">
+        <span class="badge">Bahasa Inggris · Kelas 3 SD · Topic: Parts of the Body</span>
+        <h1>Body Parts <em>Flashcards</em></h1>
+        <p class="lede">Lihat kartu, sebutkan bagian tubuhnya dalam bahasa Inggris, lalu <b>balik kartu</b> untuk memeriksa jawaban. Tandai <b>sudah hafal</b> atau <b>ulangi</b> — di akhir kamu bisa mengulang kartu yang belum hafal.</p>
+      </header>
+
+      <div class="setup-grid">
+        <section class="panel">
+          <h2><i>1</i> Jumlah kartu</h2>
+          <div class="seg" id="seg-pairs" role="group" aria-label="Jumlah kartu">
+            <button type="button" data-v="6">6</button>
+            <button type="button" data-v="8">8</button>
+            <button type="button" data-v="10" class="on">10</button>
+            <button type="button" data-v="12">12</button>
+            <button type="button" data-v="16">16</button>
+          </div>
+          <p class="hint">Tersedia 16 bagian tubuh. Kartu diambil acak sesuai jumlah yang dipilih.</p>
+        </section>
+
+        <section class="panel">
+          <h2><i>2</i> Sisi depan kartu</h2>
+          <div class="seg" id="seg-front" role="group" aria-label="Sisi depan kartu">
+            <button type="button" data-v="gambar" class="on">Gambar</button>
+            <button type="button" data-v="kata">Kata</button>
+          </div>
+          <p class="hint" id="front-hint">Depan: gambar. Balik kartu untuk melihat kata bahasa Inggrisnya.</p>
+        </section>
+
+        <section class="panel">
+          <h2><i>3</i> Tampilan</h2>
+          <label class="switch-row">
+            <span class="txt"><b>Suara</b><small>Efek bunyi saat kartu dibalik</small></span>
+            <span class="sw"><input type="checkbox" id="ck-sound" checked><i></i></span>
+          </label>
+          <button type="button" class="btn ghost fullbtn" id="btn-full-setup">⛶ &nbsp;Layar penuh</button>
+          <p class="hint">Untuk IFP / proyektor: aktifkan layar penuh, lalu mainkan dengan jari atau mouse.</p>
+        </section>
+      </div>
+
+      <div class="setup-foot">
+        <p class="note"><b>Aturan:</b> setiap kartu berisi satu bagian tubuh. Balik kartu dengan mengetuknya atau menekan tombol <b>Balik Kartu</b>, lalu tandai hafal / ulangi. Kartu yang ditandai <b>ulangi</b> bisa dimainkan lagi di akhir.</p>
+        <button type="button" class="btn primary big" id="btn-start">Mulai Belajar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FLASHCARD ============ -->
+  <section class="screen game-screen" id="screen-game" hidden>
+    <header class="gamebar">
+      <div class="gamebrand">Body <b>Parts</b></div>
+      <div class="meters">
+        <div class="prog">
+          <span id="progress-text">1 / 10 kartu</span>
+          <div class="prog-bar"><i id="prog-fill"></i></div>
+        </div>
+        <div class="counter" id="counter-known">
+          <span>Hafal</span>
+          <b id="known-count">0</b>
+        </div>
+      </div>
+    </header>
+
+    <div class="deckbar">
+      <span class="turn-dot" aria-hidden="true"></span>
+      <span class="turn-label" id="deck-tip">Sebutkan bagian tubuh ini, lalu balik kartu</span>
+      <span class="key-tip">Spasi = balik · ← → = pindah</span>
+    </div>
+
+    <div class="stage">
+      <div class="card" id="card" role="button" tabindex="0" aria-label="Kartu flashcard. Ketuk untuk membalik.">
+        <div class="face front">
+          <span class="face-tag" id="front-tag">Picture</span>
+          <div class="face-media" id="front-media"></div>
+        </div>
+        <div class="face back">
+          <span class="face-tag" id="back-tag">Word</span>
+          <div class="face-media" id="back-media"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-actions">
+      <button type="button" class="btn ghost" id="btn-prev">‹ Sebelumnya</button>
+      <button type="button" class="btn primary" id="btn-flip">Balik Kartu</button>
+      <button type="button" class="btn ghost" id="btn-next">Berikutnya ›</button>
+    </div>
+
+    <div class="mark-row">
+      <button type="button" class="btn mark again" id="btn-again">🔁 &nbsp;Ulangi</button>
+      <button type="button" class="btn mark known" id="btn-known">✓ &nbsp;Sudah Hafal</button>
+    </div>
+
+    <footer class="gamefoot">
+      <button type="button" class="btn ghost sm" id="btn-quit">Keluar</button>
+      <p class="foot-hint">Balik kartu dulu sebelum menandai, supaya kamu benar-benar mengingatnya.</p>
+      <div class="foot-right">
+        <button type="button" class="btn ghost sm" id="btn-finish">Selesai</button>
+        <button type="button" class="btn ghost sm" id="btn-sound2">🔊 Suara: ON</button>
+        <button type="button" class="btn ghost sm" id="btn-full2">⛶ Layar penuh</button>
+      </div>
+    </footer>
+
+    <div class="flash" id="flash" aria-live="polite"></div>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section class="screen results-screen" id="screen-results" hidden>
+    <div class="results-card">
+      <div class="trophy" id="res-emoji" aria-hidden="true">🏆</div>
+      <h1 id="res-title">Selesai!</h1>
+      <p class="res-sub" id="res-sub"></p>
+      <div class="res-cards" id="res-cards"></div>
+      <div class="res-meta" id="res-meta"></div>
+      <div class="res-actions">
+        <button type="button" class="btn primary" id="btn-retry">Ulangi yang Belum</button>
+        <button type="button" class="btn ghost" id="btn-again-play">Main Lagi</button>
+        <button type="button" class="btn ghost" id="btn-setup">Ubah Pengaturan</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/flash.js"></script>
+</body>
+</html>
