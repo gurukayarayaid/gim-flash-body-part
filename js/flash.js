@@ -483,7 +483,7 @@
   els.btnRetry.addEventListener('click', () => {
     const deck = state.deck;
     if (!deck) return;
-    const again = deck.cards.filter((c) => deck.marks.get(c.id) === 'again');
+    const again = deck.cards.filter((c) => deck.marks.get(c.id) !== 'known');
     if (!again.length) return;
     startDeck(again);
   });
